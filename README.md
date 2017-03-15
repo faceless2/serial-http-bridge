@@ -45,12 +45,12 @@ Install NodeJS, then run
 
 If you have any serial devices connected to your computer, simply run
 ```
-serial-http-bridge.js --static-package .
+serial-http-bridge --static-package .
 ```
 then connect to http://localhost:9615/example.html to see a live example. Alternatively run 
 
 ```
-serial-http-bridge.js --help
+serial-http-bridge --help
 ```
 for help.
 
