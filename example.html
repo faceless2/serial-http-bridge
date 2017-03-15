@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+var deviceid;
+
+function loader() {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function(res) {
+        if (req.readyState == 4 && req.status == 200) {
+            list = JSON.parse(req.responseText);
+            var select = document.getElementById("select");
+            list.devices.forEach(function(i) {
+                var option = document.createElement("option");
+                option.innerHTML = i.id;
+                select.appendChild(option);
+            });
+        }
+    }
+    req.open("GET", "/list");
+    req.send();
+}
+
+function connect(id) {
+    var stream = new EventSource("/read/"+id);
+    stream.onmessage = function(e) {
+        readLine(e.data, "normal");
+    };
+    stream.addEventListener("connection", function(e) {
+        readLine(e.data, "meta");
+        if (JSON.parse(e.data).error) {
+            stream.close();
+            document.getElementById("write").disabled = true;
+            document.getElementById("button").disabled = false;
+            deviceid = null;
+        }
+    });
+    deviceid = id;
+    document.getElementById("write").disabled = false;
+    document.getElementById("button").disabled = true;
+}
+
+// Called whenever a line is read from the serial device
+// "data" is a single line of text read from the device
+function readLine(data, type) {
+    var line = document.createElement("p");
+    line.setAttribute("class", type);
+    line.appendChild(document.createTextNode(data));
+    document.getElementById("read").appendChild(line);
+}
+
+// Called whenever data needs to be written to the  serial device
+// "data" is the content to send: one or more lines of text.
+function writeLine(data) {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function(e) {
+        if (req.readyState == 4 && req.statusCode >= 200 && req.status <= 299) {
+            // send complete
+        }
+    };
+    req.open("POST", "/write/"+deviceid);
+    req.send(data);
+}
+</script>
+<style>
+#read {
+    overflow-y: scroll;
+    whitespace: pre-wrap;
+    width: 100%;
+    height: 18em;
+    padding: 4px;
+    border: 1px solid black;
+    background-color: white;
+    font: 1em monospace;
+    -webkit-user-select: text;
+}
+.normal {
+}
+.meta {
+    color: #888;
+}
+#write {
+    margin: 1em 0 0 0;
+    padding: 2px 0;
+    width: calc(100% - 20em);
+    display: inline-block;
+    border: 1px solid gray;
+}
+input:disabled {
+    background-color: #DDD;
+}
+#select {
+    width: 12em;
+    display: inline-block;
+}
+#button {
+    width: 6em;
+    display: inline-block;
+}
+#read p {
+    margin: 0;
+}
+body {
+    width: 600px;
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+</style>
+</head>
+<body onload="loader()">
+<h4>Select a device to connect to; enter commands to send in the lower box</h4>
+<form action="#">
+  <p id="read"></p>
+  <input disabled id="write" onchange="writeLine(this.value); this.value=''; return false"/>
+  <select id="select">
+    <option>--Select a device--</option>
+  </select>
+  <button id="button" onclick="connect(this.form.select.value); return false">Connect</button>
+<form>
+</body>
+</html>

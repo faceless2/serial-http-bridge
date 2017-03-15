@@ -1,0 +1,14 @@
+{
+  "name": "serial-http-bridge",
+  "description": "An HTTP bridge between any serial hardware and the web",
+  "author": "mike@qtunes.org",
+  "license": "LICENSE",
+  "readmeFilename": "README.md",
+  "version": "1.0.0",
+  "main": "serial-http-bridge.js",
+  "dependencies": {
+    "serialport": "4.x.x",
+    "server-static": "1.x.x",
+    "finalhandler": "1.x.x"
+  }
+}
