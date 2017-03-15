@@ -48,6 +48,9 @@ for (var i=2;i<process.argv.length;i++) {
     var a = process.argv[i];
     if (a == "--static") {
         root = process.argv[++i];
+    } else if (a == "--static-package") {
+        root = process.argv[++i];
+        root = path.resolve(path.dirname(require.main.filename), root);
     } else if (a == "--port") {
         port = process.argv[++i];
     } else if (a == "--bind") {
@@ -57,16 +60,14 @@ for (var i=2;i<process.argv.length;i++) {
         }
     } else {
         console.log("Usage: node server [--root <dir>] [--port <port>] [--bind <ip | 'any'>]");
-        console.log("  --static     the optional directory to server any static files from");
-        console.log("  --port       specify the port the webserver should run on (default:9615)");
-        console.log("  --bind       specify the IP the webserver should bind to, or 'any' to listen");
-        console.log("               on any address (default: 'localhost')");
+        console.log("  --static           the optional directory to server any static files from");
+        console.log("  --static-package   as for --static, but relative to the package install root");
+        console.log("  --port             specify the port the webserver should run on (default:9615)");
+        console.log("  --bind             specify the IP the webserver should bind to, or 'any' to listen");
+        console.log("                     on any address (default: 'localhost')");
         console.log();
         process.exit(-1);
     }
-}
-if (root) {
-    root = path.resolve(path.dirname(require.main.filename), root);
 }
 
 console.log("# Starting webserver on port "+port);
