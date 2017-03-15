@@ -6,7 +6,7 @@ The webserver has the following commands:
 
 `/list`
 
-List any serial devices that are connected in a JSON object. Example output might be `{"protocol":"1","devices":[{"id":"ttyACM1"},{"id":"ttyACM2"}]}`
+List any serial devices that are connected in a JSON object. Example output might be `{"protocol":1,"devices":[{"id":"ttyACM1"},{"id":"ttyACM2"}]}`
   
 `/read/N`
 
