@@ -7,6 +7,17 @@
   "homepage": "https://github.com/faceless2/serial-http-bridge/",
   "version": "1.0.0",
   "main": "serial-http-bridge.js",
+  "bin": {
+    "serial-http-bridge": "./serial-http-bridge.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/faceless2/serial-http-bridge.git"
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": "*"
+  },
   "dependencies": {
     "serialport": "4.x.x",
     "server-static": "1.x.x",
