@@ -5,6 +5,7 @@
 var deviceid;
 
 function loader() {
+    // List the available devices and add to the select list
     var req = new XMLHttpRequest();
     req.onreadystatechange = function(res) {
         if (req.readyState == 4 && req.status == 200) {
@@ -22,11 +23,13 @@ function loader() {
 }
 
 function connect(id) {
+    // Connect to the specified device and listen for data events
     var stream = new EventSource("/read/"+id);
     stream.onmessage = function(e) {
         readLine(e.data, "normal");
     };
     stream.addEventListener("connection", function(e) {
+        // metadata about connections is returned this way
         readLine(e.data, "meta");
         if (JSON.parse(e.data).error) {
             stream.close();
@@ -62,17 +65,17 @@ function writeLine(data) {
     req.send(data);
 }
 </script>
+    
 <style>
 #read {
     overflow-y: scroll;
-    whitespace: pre-wrap;
+    white-space: pre-wrap;
     width: 100%;
     height: 18em;
     padding: 4px;
     border: 1px solid black;
     background-color: white;
     font: 1em monospace;
-    -webkit-user-select: text;
 }
 .normal {
 }
@@ -107,10 +110,11 @@ body {
 }
 </style>
 </head>
+    
 <body onload="loader()">
 <h4>Select a device to connect to; enter commands to send in the lower box</h4>
 <form action="#">
-  <p id="read"></p>
+  <div id="read"></div>
   <input disabled id="write" onchange="writeLine(this.value); this.value=''; return false"/>
   <select id="select">
     <option>--Select a device--</option>
