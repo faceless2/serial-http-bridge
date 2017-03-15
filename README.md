@@ -10,30 +10,29 @@ List any serial devices that are connected in a JSON object. Example output migh
   
 `/read/N`
 
-Open a connection to the serial device with id N if it is not opened already, and stream any data read from the device as Server-Sent Events, one event per line.
-Multiple simultaneous read connections can be made, they will all receive the same content.
+Open a connection to the serial device with id N (if it is not opened already), and stream any data read from the device as Server-Sent Events, one event per line.
+Multiple simultaneous read connections can be made, all will receive the same content. The connection to the device will be opened on demand and closed after the last connection is closed.
   
 `/write/N`
 
-Open a connection to the serial device with id N if it is not opened already, and write the data received in the body of the request (i.e. sent
+Open a connection to the serial device with id N (if it is not opened already), and write the data received in the body of the request (i.e. sent
 as a POST) to the device, line by line. No other devices may write while this operation is underway, and any attempt to do so will
-receive an HTTP 409 error. If a successful write completed, an HTTP 204 (No Content) will be returned
+receive an HTTP 409 error. If the device was opened and content written, an HTTP 204 (No Content) will be returned. If the device cannot be opened an HTTP 503 will be returned. If nothing else is holding this device open (e.g. a read connection) the serial connection will be closed after 5s
 
 `/write/N/M`
 
 Open a connection to the serial device with id N if it is not opened already, and write the command M to the device. This is identical
-to the method above except it is a GET rather than POST, and is ideal for one-line commands with no context.
+to the method above except it is a GET rather than POST, and is easier to use for one-line commands with no context.
   
 `/close/N`
 
-Close any open connection to device with id N, and disconnect any open stream. There's no need to run this command normally, the
-devices will be opened or closed on demand
+Close any open connection to device with id N, and disconnect any open "read" streams. There's normally no need to run this command, as the devices will be opened or closed on demand
   
 `/baud/N/M`
 
 Set the baud rate for device with id N to M - this will apply the next time the device is opened.
   
-Any other request will return a 404, or if the optional `--static` parameter is given, the server will attempt to server any unrecognised URLs as static files from the specified directory.
+Any other request will return a 404, or if the optional `--static` parameter is given, the server will attempt to server any unrecognised URLs as static files from the specified directory. The port the device listens to can be specified with the `--port` command line parameter, and the bind address can be set with `--bind` - it defaults to "127.0.0.1" but a value of "any" can also be used to listen on any address.
 
 
 ## Installation instructions
