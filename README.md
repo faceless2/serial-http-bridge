@@ -20,17 +20,20 @@ as a POST) to the device, line by line. No other devices may write while this op
 receive an HTTP 409 error. If a successful write completed, an HTTP 204 (No Content) will be returned
 
 `/write/N/M`
+
 Open a connection to the serial device with id N if it is not opened already, and write the command M to the device. This is identical
 to the method above except it is a GET rather than POST, and is ideal for one-line commands with no context.
   
 `/close/N`
+
 Close any open connection to device with id N, and disconnect any open stream. There's no need to run this command normally, the
 devices will be opened or closed on demand
   
 `/baud/N/M`
+
 Set the baud rate for device with id N to M - this will apply the next time the device is opened.
   
-Any other request will return a 404, or optionally the server can be set to serve static content for any unrecognised commands.
+Any other request will return a 404, or if the optional `--static` parameter is given, the server will attempt to server any unrecognised URLs as static files from the specified directory.
 
 
 ## Installation instructions
@@ -42,7 +45,14 @@ Install NodeJS, then run
 ## Example usage
 
 If you have any serial devices connected to your computer, simply run
-`cd $HOME/node_modules/serial-http-bridge
-./serial-http-bidge.js --static .`
-then connect to http://localhost:9615/example.html to see a live example
+```
+cd $HOME/node_modules/serial-http-bridge
+./serial-http-bridge.js --static .
+```
+then connect to http://localhost:9615/example.html to see a live example. Alternatively run 
+
+```
+./serial-http-bridge.js --help
+```
+for help.
 
