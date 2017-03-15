@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "serialport": "4.x.x",
-    "server-static": "1.x.x",
+    "serve-static": "1.x.x",
     "finalhandler": "1.x.x"
   }
 }
