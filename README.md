@@ -32,26 +32,25 @@ Close any open connection to device with id N, and disconnect any open "read" st
 
 Set the baud rate for device with id N to M - this will apply the next time the device is opened.
   
-Any other request will return a 404, or if the optional `--static` parameter is given, the server will attempt to server any unrecognised URLs as static files from the specified directory. The port the device listens to can be specified with the `--port` command line parameter, and the bind address can be set with `--bind` - it defaults to "127.0.0.1" but a value of "any" can also be used to listen on any address.
+Any other request will return a 404, or if the optional `--static` or `--static-package` parameters are given, the server will attempt to serve any unrecognised URLs as static files from the specified directory (relative to the current directory or the package install directory, respectively). The port the device listens to can be specified with the `--port` command line parameter, and the bind address can be set with `--bind`: it defaults to "127.0.0.1" but a value of "any" can also be used to listen on any address.
 
 
 ## Installation instructions
 
 Install NodeJS, then run
 
-`npm install https://github.com/faceless2/serial-http-bridge.git`
+`npm install -g https://github.com/faceless2/serial-http-bridge.git`
 
 ## Example usage
 
 If you have any serial devices connected to your computer, simply run
 ```
-cd $HOME/node_modules/serial-http-bridge
-./serial-http-bridge.js --static .
+serial-http-bridge.js --static-package .
 ```
 then connect to http://localhost:9615/example.html to see a live example. Alternatively run 
 
 ```
-./serial-http-bridge.js --help
+serial-http-bridge.js --help
 ```
 for help.
 
