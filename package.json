@@ -4,6 +4,7 @@
   "author": "mike@qtunes.org",
   "license": "LICENSE",
   "readmeFilename": "README.md",
+  "homepage": "https://github.com/faceless2/serial-http-bridge/",
   "version": "1.0.0",
   "main": "serial-http-bridge.js",
   "dependencies": {
